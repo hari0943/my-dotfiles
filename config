@@ -1,0 +1,219 @@
+[colors]
+background = ${xrdb:color0:#222}
+foreground = ${xrdb:color7:#222}
+primary = ${xrdb:color1:#222}
+secondary = ${xrdb:color2:#222}
+alert = ${xrdb:color3:#222}
+
+[bar/new]
+
+monitor =LVDS-1
+width = 100%
+height = 20
+radius = 5.0
+fixed-center = True
+background =#000000;${colors.background}
+foreground = ${colors.foreground}
+line-size = 3
+line-color = #f00
+border-size = 7
+bottom=true
+border-color = #00000000
+padding-left = 0
+padding-right = 2
+module-margin-left = 1
+module-margin-right = 0
+font-0 = inconsolata for powerline:pixelsize=10;1
+font-1 = unifont:fontformat=truetype:size=10:antialias=false;0
+font-2 = siji:pixelsize=10;1
+modules-left =  
+modules-center = i3
+modules-right = 
+
+tray-position = right
+tray-padding = 2
+tray-background = #000000
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[bar/example]
+monitor =LVDS-1
+width = 100%
+height = 21
+radius = 5.0
+fixed-center = True
+background =#000000;${colors.background}
+foreground = ${colors.foreground}
+line-size = 3
+line-color = #f00
+border-size = 7
+border-color = #00000000
+padding-left = 0
+padding-right = 2
+module-margin-left = 1
+module-margin-right = 0
+font-0 = inconsolata for powerline:pixelsize=10;1
+font-1 = unifont:fontformat=truetype:size=10:antialias=false;0
+font-2 = siji:pixelsize=10;1
+modules-left =  wlan eth battery
+modules-center = date
+modules-right = xbacklight  pulseaudio xkeyboard memory  cpu temperature  powermenu
+
+tray-position = right
+tray-padding = 2
+tray-background = #000000
+cursor-click = pointer
+cursor-scroll = ns-resize
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix = 
+format-prefix-foreground = ${colors.foreground}
+
+label-layout =
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.secondary}
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+label-focused = %index%
+label-focused-background = ${colors.background}
+label-focused-foreground = ${xrdb:color10}
+label-focused-padding = 2
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index%
+label-unfocused-padding = 2
+
+; visible = Active workspace on unfocused monitor
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+label-visible-foreground = ${self.label-focused-foreground}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %index% D:
+label-urgent-background = ${colors.alert}
+label-urgent-foreground = ${colors.foreground}
+label-urgent-padding = 2
+
+[module/xbacklight]
+type = internal/xbacklight
+format =BL <label> |
+label=%percentage%%
+
+[module/backlight-acpi]
+inherit = module/xbacklight
+type = internal/backlight
+card = intel_backlight
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format= CPU <label> |
+;format-prefix = "CPU"
+;format-prefix-foreground = ${colors.foreground}
+
+label = %percentage:2%%
+
+[module/memory]
+type = internal/memory
+interval = 2
+format=RAM <label> | 	
+label = %percentage_used%%
+[module/wlan]
+type = internal/network
+interface = wlp3s0
+interval = 3.0
+
+format-connected = WIFI:<label-connected> | 
+label-connected = %essid%
+format-disconnected =NO WIFI | 
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground}
+[module/eth]
+type = internal/network
+interface = enp0s25
+interval = 3.0
+format-connected-prefix = WIRED | 
+format-connected-prefix-foreground = ${colors.foreground}
+label-connected = %local_ip%
+format-disconnected =NO WIRED | 
+[module/date]
+type = internal/date
+interval = 60
+format=<label>
+time = %A, %B %d  - %I:%M %p
+label = %time%
+format-foreground = ${colors.foreground}
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+format-volume = <label-volume> | 
+label-volume = VOL %percentage%% 
+label-volume-foreground = ${root.foreground}
+
+label-muted = MUTE | 
+label-muted-foreground = ${xrdb:color0}
+[module/battery]
+type = internal/battery
+full-at = 99
+battery = BAT0
+adapter = AC0
+poll-interval = 2
+time-format = %H:%M	
+format-charging = CHR <label-charging>
+format-discharging = DIS <label-discharging>
+label-charging = %percentage%%
+label-discharging = %percentage%%
+label-full =FULL
+label-full-foreground = $(xrdb:color0)
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+
+format-spacing = 1
+
+label-open = 
+label-open-foreground = ${colors.secondary}
+label-close =  cancel
+label-close-foreground = ${colors.secondary}
+label-separator = |
+label-separator-foreground = ${colors.foreground}
+
+menu-0-0 = reboot
+menu-0-0-exec = menu-open-1
+menu-0-1 = power off
+menu-0-1-exec = menu-open-2
+
+menu-1-0 = cancel
+menu-1-0-exec = menu-open-0
+menu-1-1 = reboot
+menu-1-1-exec = sudo reboot
+
+menu-2-0 = power off
+menu-2-0-exec = sudo poweroff
+menu-2-1 = cancel
+menu-2-1-exec = menu-open-0
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+;pseudo-transparency = false
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+; vim:ft=dosini
